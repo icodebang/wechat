@@ -1,27 +1,18 @@
 <!--index.wxml-->
-
-<view class="ora_header">
-    <image class="ora_logo" src="/image/oradt/logo.png" background-size="cover"></image>
-    <text class="ora_welcome">Welcome to IMORA</text>
-</view>
-
-
 <view class="ora_container">
-  <view  bindtap="bindViewTap" class="userinfo">
+  <view  class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>
 </view>
 
-<form bindsubmit="loginOradt" bindreset="formReset">
-  <view class="btn-area input col10">
-    <input name="username" placeholder="用户名" auto-focus/>
-  </view>
-  <view class="btn-area input col10">
-    <input name="password" password placeholder="密码" />
-  </view>
-  <view class="btn-area">
-    <button formType="submit">Submit</button>
-    <button formType="reset">Reset</button>
-  </view>
-</form>
+    <view class="kind-list">
+      <block wx:for-items="{{cardsList.vcards}}" wx:key="{{item.id}}">
+        <view class="kind-list-item">
+          <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
+            <view class="kind-list-text">{{item.name}}</view>
+            <image class="kind-list-img" src="{{item.picpatha}}"></image>
+          </view>
+        </view>
+      </block>
+    </view>

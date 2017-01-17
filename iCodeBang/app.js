@@ -3,14 +3,20 @@ var debug = true;
 var checkOpenIdUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=%APPID%&secret=%SECRET%&js_code=%JSCODE%&grant_type=authorization_code";
 
 var apiBaseUrl = "http://192.168.30.191:9999/";
-var apiUrls = {login : apiBaseUrl + "oauth"};
+var apiUrls = {
+  login    : apiBaseUrl + "oauth",
+  getCard  : apiBaseUrl + "contact/vcard"
+};
 
 App({
   debug : debug,
   apiUrls : apiUrls,
 
   onLaunch: function () {
-    console.log('App Launch')
+    console.log('App Launch');
+    if (null != this.globalOradtData.authInfo) {
+      wx.redirectTo({url: '/icodebang_com/index/index'});
+    }
   },
   onShow: function () {
     console.log('App Show')
@@ -25,7 +31,7 @@ App({
   },
   globalOradtData : {
     hasLogin : false,
-
+    authInfo : null
   },
   getUserInfo:function(cb){
     var that = this

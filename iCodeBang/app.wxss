@@ -232,8 +232,12 @@ input {
   border-radius: 4rpx;
   font-size: 40rpx;
   line-height: 90rpx;
-  text-indent: 20px;
+  padding: 0 0 0 20px;
 }
+.tap-guide {
+  background-color: #3cc51f;
+}
+
 .col-12 {
     width: 100%;
   }
