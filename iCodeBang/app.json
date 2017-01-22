@@ -1,5 +1,9 @@
 {
   "pages": [
+    "icodebang_com/contactGroup/index",
+
+    
+
     "icodebang_com/login/index",
     "icodebang_com/index/index",
     "icodebang_com/relationship/index",
@@ -9,6 +13,8 @@
 
     
     "page/component/index",
+
+
 
     "page/component/pages/view/view",
     "page/component/pages/scroll-view/scroll-view",
