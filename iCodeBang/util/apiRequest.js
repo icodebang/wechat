@@ -1,47 +1,16 @@
 var app = getApp();
+var config = require('../config.js');
 var apiRequest = {
-    login : function (params) {
+    login : function (params, callback) {
         wx.request({
-          url: app.apiUrls.login,
+          url: config.apiUrls.login,
           data: params,
           dataType : 'json',
           method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
           // header: {}, // 设置请求的 header
           header : {'content-type' : 'application/x-www-form-urlencoded'},
           success: function(res){
-            app.debug && console.info(app.apiUrls.login, params, res);
-            if (res.data.body) {
-              app.globalOradtData.authInfo = res.data.body;
-
-              wx.redirectTo({url: '/icodebang_com/test/index'});
-            } else {
-              var msg = undefined === res.data.head.error ? "未知错误" : res.data.head.error;
-              wx.showModal({
-                title: "登录失败",
-                content: res.data.head.error.description,
-                showCancel: false,
-                confirmText: "重新登录"
-              });
-              return;
-            }
-          },
-          fail: function() {},
-          complete: function() {}
-        });
-  },
-
-  getCards : function (params, callback) {
-        wx.request({
-          url: app.apiUrls.getCard,
-          data: params,
-          dataType : 'json',
-          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-          header: {
-              'AccessToken' : app.globalOradtData.authInfo.accesstoken,
-              'content-type' : 'application/x-www-form-urlencoded'
-          },
-          success: function(res){
-            app.debug && console.info(app.apiUrls.getCard, params, res);
+            config.debug && console.info(res);
             if (res.data.body) {
               typeof(callback)=='function' && callback(res.data.body);
             } else {
@@ -58,8 +27,76 @@ var apiRequest = {
           fail: function() {},
           complete: function() {}
         });
+  },
 
-  }
+  getCards : function (params, callback, failCallback) {
+        wx.request({
+          url: config.apiUrls.getCard,
+          data: params,
+          dataType : 'json',
+          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+          header: {
+              'AccessToken' : app.globalOradtData.authInfo.accesstoken,
+              'content-type' : 'application/x-www-form-urlencoded'
+          },
+          success: function(res){
+            config.debug && console.info(config.apiUrls.getCard, params, res);
+            if (res.data.body) {
+              typeof(callback)=='function' && callback(res.data.body);
+            } else {
+              var msg = undefined === res.data.head.error ? "未知错误" : res.data.head.error;
+              typeof(failCallback)=='function' ? failCallback(msg)  :      wx.showModal({
+                title: "获取名片数据失败",
+                content: res.data.head.error.description,
+                showCancel: false,
+                confirmText: "重 试"
+              });
+              return;
+            }
+          },
+          fail: function() {},
+          complete: function() {}
+        });
+
+  },
+
+  getCardGroups : function (params, callback, failCallback) {
+    this.getJson (config.apiUrls.getCardGroup, params, callback, failCallback);
+  },
+
+  /**
+   * 公用GET请求，响应类型为json
+   */
+  getJson : function (url, params, callback, failCallback) {
+        wx.request({
+          url: url,
+          data: params,
+          dataType : 'json',
+          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+          header: {
+              'AccessToken' : app.globalOradtData.authInfo.accesstoken,
+              'content-type' : 'application/x-www-form-urlencoded'
+          },
+          success: function(res){
+            config.debug && console.info(url, params, res);
+            if (res.data.body) {
+              typeof(callback)=='function' && callback(res.data.body);
+            } else {
+              var msg = undefined === res.data.head.error ? "未知错误" : res.data.head.error;
+              typeof(failCallback)=='function' ? failCallback(msg)  :      wx.showModal({
+                title: "获取数据失败",
+                content: res.data.head.error.description,
+                showCancel: false,
+                confirmText: "重 试"
+              });
+              return;
+            }
+          },
+          fail: function() {},
+          complete: function() {}
+        });
+
+  } // end getJson
 
 }
 

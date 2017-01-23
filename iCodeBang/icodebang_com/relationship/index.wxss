@@ -4,29 +4,22 @@
   flex-direction: column;
   align-items: center;
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.bc_green {
+    background-color: #00ff00;
+    height: 200px;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.bc_red {
+    background-color: #f00;
+    height: 200px;
 }
 
-.usermotto {
-  margin-top: 200px;
-}
-.footer {
-  background-color: #aaa;
-  height: 60rpx;
-  width:100%;
-  position: fixed;
-  bottom: 0;
+.bc_blue {
+    background-color: #00f;
+    height: 200px;
 }
 
-.navigator {
-  margin-top: 200px;
+.bc_yellow {
+    background-color: #0ff;
+    height: 200px;
 }

@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 var app = getApp();
-app.debug && console.info(wx);
+var apiRequest = require('../../util/apiRequest.js');
 Page({
   data: {
     motto: 'Hello World',
@@ -18,7 +18,47 @@ Page({
     if (null != app.globalOradtData.authInfo) {
       wx.redirectTo({url: '/icodebang_com/index/index'});
     }
-    var that = this
+    var that = this;
+
+    var that = this;
+    if (null != app.globalOradtData.authInfo) {
+      wx.redirectTo({url: '/icodebang_com/index/index'});
+      return;
+    }
+    wx.getStorage({
+      key: 'loginInfo',
+      success: function(res){
+        var params = res.data;
+        apiRequest.login(params, function (data) {
+          app.globalOradtData.authInfo = data;
+          wx.setStorage({
+            key: 'loginInfo',
+            data: params
+          });
+          wx.switchTab({
+                url: '/icodebang_com/index/index',
+                success: function(res){
+                  console.info(res);
+                },
+                fail: function() {
+                  console.info('fail')
+                },
+                complete: function() {
+                  console.info('----complete')
+                }
+              });
+        });
+
+      },
+      fail: function() {
+        // fail
+      },
+      complete: function() {
+        // complete
+      }
+    });
+
+
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
       //更新数据
@@ -63,19 +103,12 @@ Page({
     params.type   = 'basic';
     params.ismd5  = '0';
     params.ip     = '127.0.0.1';
-    wx.request({
-      url: app.apiUrls.login,
-      data: params,
-      dataType : 'json',
-      method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      // header: {}, // 设置请求的 header
-      header : {'content-type' : 'application/x-www-form-urlencoded'},
-      success: function(res){
-        app.debug && console.info(app.apiUrls.login, params, res);
-        if (res.data.body) {
-          app.globalOradtData.authInfo = res.data.body;
-          app.debug && console.info(app.globalOradtData.authInfo);
-          wx.switchTab({
+    apiRequest.login(params, function (data) {
+      wx.setStorage({
+        key: 'loginInfo',
+        data: params
+      })
+      wx.switchTab({
             url: '/icodebang_com/index/index',
             success: function(res){
               console.info(res);
@@ -86,25 +119,10 @@ Page({
             complete: function() {
               console.info('complete')
             }
-          })
-        } else {
-          var msg = undefined === res.data.head.error ? "未知错误" : res.data.head.error;
-          wx.showModal({
-            title: "登录失败",
-            content: res.data.head.error.description,
-            showCancel: false,
-            confirmText: "重新登录"
           });
-          return;
-        }
-      },
-      fail: function() {
-        // fail
-      },
-      complete: function() {
-        // complete
-      }
-    })
+    });
+
+    return;
 
   }
 })

@@ -1,25 +1,17 @@
-const openIdUrl = require('./config').openIdUrl;
-var debug = true;
+var config = require('./config.js');
+const openIdUrl = config.openIdUrl;
 var checkOpenIdUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=%APPID%&secret=%SECRET%&js_code=%JSCODE%&grant_type=authorization_code";
 
-var apiBaseUrl = "http://192.168.30.191:9999/";
-var apiUrls = {
-  login    : apiBaseUrl + "oauth",
-  getCard  : apiBaseUrl + "contact/vcard"
-};
-
 App({
-  debug : debug,
-  apiUrls : apiUrls,
+  apiUrls : config.apiUrls,
 
   onLaunch: function () {
     console.log('App Launch');
-    if (null != this.globalOradtData.authInfo) {
-      wx.redirectTo({url: '/icodebang_com/index/index'});
-    }
+    return;
   },
   onShow: function () {
     console.log('App Show')
+    var that = this;
   },
   onHide: function () {
     console.log('App Hide')
@@ -38,17 +30,17 @@ App({
     if(this.globalData.userInfo){
       typeof cb == "function" && cb(this.globalData.userInfo)
     }else{
-      debug && console.info(new Date().getTime());
+      config.debug && console.info(new Date().getTime());
       //调用登录接口
       wx.login({
         success: function (result) {
-          debug && console.info(result);
+          config.debug && console.info(result);
           wx.getUserInfo({
             success: function (res) {
-              debug && console.info(res);
+              config.debug && console.info(res);
               that.globalData.userInfo = res.userInfo;
               typeof cb == "function" && cb(that.globalData.userInfo);
-              debug && console.info(new Date().getTime());
+              config.debug && console.info(new Date().getTime());
             }
           })
         }
@@ -64,7 +56,7 @@ App({
     } else {
       wx.login({
         success: function(data) {
-          debug && console.info(data);
+          config.debug && console.info(data);
           wx.request({
             url: openIdUrl,
             data: {
@@ -88,4 +80,5 @@ App({
       })
     }
   }
+  
 })
