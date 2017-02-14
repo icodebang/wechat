@@ -1,16 +1,20 @@
 <view class="index">
-    <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+    <block wx:for-items="{{groupList}}" wx:key="{{item.id}}">
       <view class="kind-list-item">
-        <view class="">{{group.name}}</view>
-        <view class="navigator-arrow"></view>
-        <view class="">
-          <block wx:for-items="{{list}}" wx:key="{{item.id}}">
-            <navigator url="../contact/{{page.url}}" class="navigator">
-              <view class="navigator-text">{{contact.name}}</view>
-              <view class="navigator-arrow"></view>
-            </navigator>
-          </block>
+        <view class="group-link {{item.open ? 'selected' : ''}}" id="{{item.id}}" bindtap="toggleGroup">
+          <view class="">{{item.name}}</view>
+          <view class="{{item.open ? 'navigator-arrow-down' : 'navigator-arrow-right'}}"></view>
         </view>
+        <block wx:if="{{item.open}}">
+          <view class="cardsList">
+            <block wx:for-items="{{cardList.vcards}}" wx:key="{{item.id}}">
+              <view id="{{item.id}}" class="scroll-view-item">
+                <view class="kind-list-text">{{item.name}}</view>
+                <image class="kind-list-img" src="{{item.picpatha}}"></image>
+              </view>
+            </block>
+          </view>
+        </block>
       </view>
     </block>
 </view>

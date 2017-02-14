@@ -63,10 +63,7 @@ scroll-view {
 .big-button {
   width:90%;
 }
-.button:hover {
-  color:#ccc;
-}
 .addCardView {
-  margin-top:100rpx;
+  margin-top:80rpx;
 }
 

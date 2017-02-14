@@ -5,9 +5,13 @@
 
     "icodebang_com/login/index",
     "icodebang_com/index/index",
+    "icodebang_com/index/addCard",
     "icodebang_com/relationship/index",
     "icodebang_com/exchange/index",
     "icodebang_com/contactGroup/index",
+    "icodebang_com/setting/index",
+    "icodebang_com/setting/faq",
+    "icodebang_com/setting/about",
 
 
 
@@ -127,10 +131,10 @@
       "selectedIconPath": "image/icon_API_HL.png",
       "text": "人脉"
     }, {
-      "pagePath": "icodebang_com/exchange/index",
+      "pagePath": "icodebang_com/setting/index",
       "iconPath": "image/icon_API.png",
       "selectedIconPath": "image/icon_API_HL.png",
-      "text": "交换名片"
+      "text": "设置"
     }]
   },
   "networkTimeout": {

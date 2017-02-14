@@ -29,35 +29,11 @@ var apiRequest = {
         });
   },
 
+  /**
+   * 根据参数获取名片数据
+   */
   getCards : function (params, callback, failCallback) {
-        wx.request({
-          url: config.apiUrls.getCard,
-          data: params,
-          dataType : 'json',
-          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-          header: {
-              'AccessToken' : app.globalOradtData.authInfo.accesstoken,
-              'content-type' : 'application/x-www-form-urlencoded'
-          },
-          success: function(res){
-            config.debug && console.info(config.apiUrls.getCard, params, res);
-            if (res.data.body) {
-              typeof(callback)=='function' && callback(res.data.body);
-            } else {
-              var msg = undefined === res.data.head.error ? "未知错误" : res.data.head.error;
-              typeof(failCallback)=='function' ? failCallback(msg)  :      wx.showModal({
-                title: "获取名片数据失败",
-                content: res.data.head.error.description,
-                showCancel: false,
-                confirmText: "重 试"
-              });
-              return;
-            }
-          },
-          fail: function() {},
-          complete: function() {}
-        });
-
+        this.getJson (config.apiUrls.getCard, params, callback, failCallback);
   },
 
   getCardGroups : function (params, callback, failCallback) {

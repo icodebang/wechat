@@ -11,23 +11,21 @@ Page({
     apiRequest.getCardGroups(params, that.showGroup);
   },
   data: {
-    list: [
+    groupList: [
       {
-        id: 'api',
-        name: '开放接口',
-        open: false,
-        pages: [
-          {
-            zh: '微信登录',
-            url: 'login/login'
-          }, {
-            zh: '获取用户信息',
-            url: 'get-user-info/get-user-info'
-          }
-        ]
+          id    : "",
+          name  : "全 部",
+          open  : false,
+          cards : [],
+          isCardLoaded : false
       }
-    ]
+    ],
+    cardList : [],
+    openGroupId : null
   },
+  /**
+   * 默认显示名片分组
+   */
   showGroup : function (groupList) {
       config.debug && console.info(groupList);
       var that = this;
@@ -37,7 +35,7 @@ Page({
       }
       groupList = groupList.groups;
       for(var i=0; i<groupList.length; i++) {
-        this.data.push({
+        this.data.groupList.push({
           id    : groupList[i].groupid,
           name  : groupList[i].group,
           open  : false,
@@ -46,16 +44,41 @@ Page({
         });
       }
       this.setData({
-        groupList:groupList
+        groupList:this.data.groupList
       });
   },
-  kindToggle: function (e) {
-    var id = e.currentTarget.id, list = this.data.list;
-    for (var i = 0, len = list.length; i < len; ++i) {
-      list[i].open = list[i].id == id ? !list[i].open : false;
+  /**
+   * 点击名片分组， 展开当前分组, 加载当前分组名片
+   */
+  toggleGroup: function (e) {
+    var id = e.currentTarget.id, list = this.data.groupList;
+    for (var i = 0, len = this.data.groupList; i < len; ++i) {
+      this.data.groupList[i].open = this.data.groupList[i].id == id ? !this.data.groupList[i].open : false;
     }
-    this.setData({
-      list: list
-    });
+    this.loadCardsInGroup(id);
+  },
+  /**
+   * 获取名片分组内的名片
+   */
+  loadCardsInGroup : function (groupId) {
+    var params = {cardgroupid : groupId, self : 'false'};
+    for (var i = 0, len = this.data.groupList.length; i < len; i++) {
+      this.data.groupList[i].open = this.data.groupList[i].id == groupId ? !this.data.groupList[i].open : false;
+    }
+    apiRequest.getCards(params, this.showGroupCards);
+  },
+  /**
+   * 显示名片分组内的名片
+   */
+  showGroupCards : function (cardsList) {
+      if (typeof(cardsList.vcards)!='object') {
+        // 没有名片
+        cardsList.vcards = {};
+      }
+      config.debug && console.info(cardsList);
+      this.setData({
+        groupList : this.data.groupList,
+        cardList  : cardsList
+      });
   }
 })

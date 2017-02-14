@@ -5,14 +5,21 @@
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>
 </view>
+<!-- 我的名片列表区域 -->
+<view class="scroll-container">
+  <scroll-view scroll-y="true" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="{{scrollToView}}" scroll-top="{{scrollTop}}">
+  <block wx:for-items="{{cardsList.vcards}}" wx:key="{{item.id}}">
+      <view id="{{item.id}}" class="scroll-view-item kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}">
+        <view class="kind-list-text">{{item.name}}</view>
+        <image class="kind-list-img" src="{{item.picpatha}}"></image>
+      </view>
+  </block>
+  </scroll-view>
+</view>
 
-    <view class="kind-list">
-      <block wx:for-items="{{cardsList.vcards}}" wx:key="{{item.id}}">
-        <view class="kind-list-item">
-          <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
-            <view class="kind-list-text">{{item.name}}</view>
-            <image class="kind-list-img" src="{{item.picpatha}}"></image>
-          </view>
-        </view>
-      </block>
-    </view>
+<!--  名片拍照录入 -->
+<view class="addCardView">
+    <navigator url="addCard" class="button big-button">
+        <view class="navigator-text">添加我的名片</view>
+    </navigator>
+</view>

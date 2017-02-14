@@ -15,11 +15,6 @@ Page({
     });
   },
   onLoad: function () {
-    if (null != app.globalOradtData.authInfo) {
-      wx.redirectTo({url: '/icodebang_com/index/index'});
-    }
-    var that = this;
-
     var that = this;
     if (null != app.globalOradtData.authInfo) {
       wx.redirectTo({url: '/icodebang_com/index/index'});

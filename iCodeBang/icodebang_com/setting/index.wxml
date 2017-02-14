@@ -1,0 +1,15 @@
+<view class="index">
+    <block wx:for-items="{{list}}" wx:key="{{item.id}}">
+      <view class="kind-list-item">
+        <navigator url="{{item.url}}" class="group-link">
+              <view class="navigator-text">{{item.name}}</view>
+              <view class="navigator-arrow-right"></view>
+        </navigator>
+      </view>
+    </block>
+</view>
+
+<!--  退出登录 -->
+<view class="footer">
+    <view class="button big-button" bindtap="logout">退出登录</view>
+</view>
